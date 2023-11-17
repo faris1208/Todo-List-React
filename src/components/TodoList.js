@@ -1,0 +1,58 @@
+import { CiSquareCheck } from "react-icons/ci";
+import { CiEdit } from "react-icons/ci";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+
+
+const TodoList = ({todos, setTodos, setEditTodo}) => {
+    console.log(todos);
+
+    const handleComplete = (todo) => {
+        setTodos(
+            todos.map((item) => 
+                {
+                    if(item.id === todo.id) {
+                        return {...item, completed: !item.completed}
+                    }
+                    return item;
+                })
+        )
+    }
+
+    const handleEdit = ({id}) => {
+        const findTodo = todos.find((todo) => todo.id === id);
+        setEditTodo(findTodo)
+    }
+
+    const handleDelete = ({id}) => {
+        setTodos(todos.filter((todo) => todo.id !== id))
+        
+    }
+
+  return (
+    <div>
+      {todos.map((todo) => (
+        <li className="list-item" key={todo.id}>
+          <input
+            type="text"
+            value={todo.title}
+            className={`list ${todo.completed ? "complete" : ""}`}
+            onChange={(event) => event.preventDefault()}
+          />
+          <div className="new">
+            <button className="button-complete task-button" onClick={() => handleComplete(todo)}>
+                <CiSquareCheck className="check" />
+            </button>
+            <button className="button-edit task-button" onClick={() => handleEdit(todo)}>
+                 <CiEdit className="edit" />
+            </button>
+            <button className="button-delete task-button" onClick={() => handleDelete(todo)}>
+                 <MdOutlineDeleteOutline className="delete" />
+            </button>
+          </div>
+        </li>
+      ))}
+    </div>
+  );
+};
+
+export default TodoList;
